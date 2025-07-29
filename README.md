@@ -1,8 +1,20 @@
-# GoodGalRiyak Blog
+# GoodGalRiyak Blog & AI Copilot
 
-This is a Next.js blog site.
+A modern blog platform for **GoodGalRiyak**, featuring:
+- **Dynamic news section** powered by [NewsAPI](https://newsapi.org/).
+- **AI Copilot** for writing suggestions and chat, powered by Hugging Face.
+- **Elegant blog/article editor**.
+- **Responsive design with custom CSS**.
 
-## Deployment
-- Import this repo to [Vercel](https://vercel.com).
-- Add environment variable `MONGO_URI` from MongoDB Atlas.
-- Deploy and your site will be live.
+---
+
+## 🚀 Features
+- **Live News Headlines**: Fetches the latest top headlines dynamically.
+- **AI Writing Assistant**: Suggests content and answers queries.
+- **Article Box**: Write and edit blog posts.
+- **Search-ready layout** with space for future filters.
+
+---
+
+## 🔑 Environment Variables
+Create a `.env.local` file in the project root and add:
