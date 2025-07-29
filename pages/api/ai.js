@@ -14,12 +14,12 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 200,
+        max_tokens: 150,
       }),
     });
 
     const data = await response.json();
-    res.status(200).json({ result: data.choices[0].message.content });
+    res.status(200).json({ result: data.choices?.[0]?.message?.content || "No response" });
   } catch (error) {
     console.error("AI API error:", error);
     res.status(500).json({ message: "AI request failed" });
