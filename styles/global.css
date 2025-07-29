@@ -3,6 +3,5 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #fff0f6; /* light pink */
+  font-family: 'Inter', sans-serif;
 }
