@@ -42,10 +42,10 @@ export default function Home() {
 
       {/* Navigation */}
       <nav className="bg-white shadow flex justify-center space-x-8 py-4">
-        <a href="#" className="text-indigo-600 font-medium hover:underline">Home</a>
-        <a href="#" className="text-gray-700 hover:underline">Articles</a>
-        <a href="#" className="text-gray-700 hover:underline">AI Assistant</a>
-        <a href="#" className="text-gray-700 hover:underline">About</a>
+           <a href="/" className="text-indigo-600 font-medium hover:underline">Home</a>
+           <a href="/articles" className="text-gray-700 hover:underline">Articles</a>
+           <a href="/ai" className="text-gray-700 hover:underline">AI Assistant</a>
+           <a href="/about" className="text-gray-700 hover:underline">About</a>
       </nav>
 
       {/* Main Content */}
