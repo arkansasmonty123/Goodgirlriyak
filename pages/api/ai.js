@@ -1,19 +1,28 @@
+const HF_MODEL = "HuggingFaceH4/zephyr-7b-alpha";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
   const { prompt } = req.body;
+
   try {
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
+      `https://api-inference.huggingface.co/models/${HF_MODEL}`,
       {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ inputs: prompt || "Write a short intro for a blog article." }),
+        body: JSON.stringify({
+          inputs: prompt || "Write a short intro for a blog article.",
+          parameters: {
+            max_new_tokens: 200,
+            temperature: 0.7,
+          },
+        }),
       }
     );
 
@@ -27,7 +36,7 @@ export default async function handler(req, res) {
       aiText = data.generated_text.trim();
     }
 
-    res.status(200).json({ result: aiText || "No AI output." });
+    res.status(200).json({ result: aiText });
   } catch (error) {
     console.error("HF API error:", error);
     res.status(500).json({ message: "AI request failed" });
