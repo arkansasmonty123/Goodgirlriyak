@@ -13,22 +13,21 @@ export default async function handler(req, res) {
           "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ inputs: prompt }),
+        body: JSON.stringify({ inputs: prompt || "Write a short intro for a blog article." }),
       }
     );
 
     const data = await response.json();
     console.log("HF AI Response:", data);
 
-    if (data.error) {
-      return res.status(500).json({ result: `HF API Error: ${data.error}` });
+    let aiText = "No response from AI.";
+    if (Array.isArray(data) && data[0]?.generated_text) {
+      aiText = data[0].generated_text.trim();
+    } else if (data.generated_text) {
+      aiText = data.generated_text.trim();
     }
 
-    const aiText = Array.isArray(data)
-      ? data[0]?.generated_text || "No response"
-      : "No response";
-
-    res.status(200).json({ result: aiText });
+    res.status(200).json({ result: aiText || "No AI output." });
   } catch (error) {
     console.error("HF API error:", error);
     res.status(500).json({ message: "AI request failed" });
