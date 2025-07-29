@@ -165,82 +165,138 @@ export default function Home() {
 
         {/* Latest Articles */}
         <section className="mb-10">
-          <h2 className="text-3xl font-bold mb-6">Latest Articles</h2>
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-            {filteredArticles.length > 0 ? (
-              filteredArticles.map((article, i) => (
-                <div key={i} className="bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
-                  <img src={article.image} alt={article.title} className="w-full h-40 object-cover" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-bold">{article.title}</h3>
-                    <p className="text-gray-700 text-sm mt-2">{article.content}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500">No articles found.</p>
-            )}
-          </div>
-        </section>
+import { useState, useEffect } from "react";
 
-        {/* Current Affairs / News Section */}
-        <section className="bg-indigo-50 rounded-xl p-6 shadow-md mb-10">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-3">Current Affairs & News</h2>
-          {news.length > 0 ? (
-            <ul className="space-y-4">
-              {news.map((n, idx) => (
-                <li key={idx} className="border-b pb-4 flex space-x-4">
-                  <img
-                    src={n.image || "https://picsum.photos/200/120"}
-                    alt={n.title}
-                    className="w-40 h-24 object-cover rounded"
-                  />
-                  <div>
-                    <a href={n.url} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-indigo-600 hover:underline">
-                      {n.title}
-                    </a>
-                    <p className="text-gray-600 text-sm mt-1">{n.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">Fetching the latest news...</p>
-          )}
-        </section>
+export default function Home() {
+  const [news, setNews] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-        {/* AI Assistant Section */}
-        <section className="bg-gray-100 rounded-xl p-6 shadow-md">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-3">AI Assistant Suggests</h2>
-          <p className="text-gray-700 mb-4">
-            Get personalized AI-powered suggestions for blog topics.
-          </p>
-          <button
-            onClick={getAISuggestions}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
-          >
-            {loadingAI ? "Loading..." : "Get AI Suggestions"}
-          </button>
+  // Example articles
+  const articles = [
+    {
+      title: "Welcome to GoodGalRiyak!",
+      description: "Your first blog post is here.",
+      image: "https://source.unsplash.com/600x400/?welcome,blog",
+    },
+    {
+      title: "AI Assistant Ready",
+      description: "Get AI-powered blog suggestions.",
+      image: "https://source.unsplash.com/600x400/?ai,technology",
+    },
+  ];
 
-          {aiSuggestions.length > 0 && (
-            <ul className="mt-6 space-y-3">
-              {aiSuggestions.map((s, i) => (
-                <li key={i} className="bg-white shadow p-4 rounded-lg text-gray-700">{s}</li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </main>
+  // Fetch latest news using NewsAPI
+  useEffect(() => {
+    async function fetchNews() {
+      try {
+        const response = await fetch(
+          `https://newsapi.org/v2/top-headlines?country=in&apiKey=c6dcd94f1ac8f10fcb818c2cce026535`
+        );
+        const data = await response.json();
+        if (data.articles) {
+          setNews(data.articles.slice(0, 5)); // Show top 5 news articles
+        }
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    }
+    fetchNews();
+  }, []);
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 text-center py-6 mt-10">
-        <p>© 2025 GoodGalRiyak Blog. All rights reserved.</p>
-        <div className="mt-2 space-x-4">
-          <a href="#" className="hover:text-white">Twitter</a>
-          <a href="#" className="hover:text-white">Instagram</a>
-          <a href="#" className="hover:text-white">GitHub</a>
+  // Filtered articles based on search
+  const filteredArticles = articles.filter((article) =>
+    article.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-4">
+      <header className="text-center mb-8">
+        <h1 className="text-4xl font-bold">GoodGalRiyak Blog</h1>
+        <nav className="mt-2 space-x-4">
+          <a href="#" className="text-blue-600 hover:underline">
+            Home
+          </a>
+          <a href="#" className="text-blue-600 hover:underline">
+            Articles
+          </a>
+          <a href="#" className="text-blue-600 hover:underline">
+            About
+          </a>
+        </nav>
+      </header>
+
+      {/* Search bar */}
+      <div className="max-w-xl mx-auto mb-6">
+        <input
+          type="text"
+          placeholder="Search articles..."
+          className="w-full p-2 border rounded"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* Latest Articles */}
+      <section className="max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4">Latest Articles</h2>
+        <div className="grid gap-4">
+          {filteredArticles.map((article, index) => (
+            <div key={index} className="bg-white p-4 rounded shadow">
+              <img
+                src={article.image}
+                alt={article.title}
+                className="w-full h-48 object-cover rounded mb-3"
+              />
+              <h3 className="text-xl font-semibold">{article.title}</h3>
+              <p className="text-gray-600">{article.description}</p>
+            </div>
+          ))}
         </div>
+      </section>
+
+      {/* Latest World News */}
+      <section className="max-w-3xl mx-auto mt-10">
+        <h2 className="text-2xl font-bold mb-4">Latest World News</h2>
+        <div className="grid gap-4">
+          {news.length > 0 ? (
+            news.map((item, index) => (
+              <div key={index} className="bg-white p-4 rounded shadow">
+                {item.urlToImage && (
+                  <img
+                    src={item.urlToImage}
+                    alt={item.title}
+                    className="w-full h-48 object-cover rounded mb-3"
+                  />
+                )}
+                <h3 className="text-lg font-semibold">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Read more
+                </a>
+              </div>
+            ))
+          ) : (
+            <p>Loading news...</p>
+          )}
+        </div>
+      </section>
+
+      {/* AI Assistant Section */}
+      <section className="max-w-3xl mx-auto mt-10 bg-white p-4 rounded shadow">
+        <h2 className="text-2xl font-bold mb-4">AI Assistant</h2>
+        <p className="text-gray-600">
+          Type a topic, and AI will suggest blog ideas (coming soon).
+        </p>
+      </section>
+
+      <footer className="text-center mt-10 text-gray-500">
+        © 2025 GoodGalRiyak Blog
       </footer>
     </div>
   );
-            }
+        }
