@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar";
-
 export default function Home() {
   const posts = [
     { title: "Welcome to GoodGalRiyak!", content: "Your first blog post is here." },
@@ -9,7 +7,9 @@ export default function Home() {
 
   return (
     <div className="bg-pink-50 min-h-screen">
-      <Navbar />
+      <header className="bg-pink-500 p-4 text-white text-center text-3xl font-bold">
+        GoodGalRiyak Blog
+      </header>
 
       <main className="p-6">
         <h2 className="text-2xl font-semibold mb-4">Latest Articles</h2>
