@@ -254,37 +254,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Latest World News */}
       <section className="max-w-3xl mx-auto mt-10">
-        <h2 className="text-2xl font-bold mb-4">Latest World News</h2>
-        <div className="grid gap-4">
-          {news.length > 0 ? (
-            news.map((item, index) => (
-              <div key={index} className="bg-white p-4 rounded shadow">
-                {item.urlToImage && (
-                  <img
-                    src={item.urlToImage}
-                    alt={item.title}
-                    className="w-full h-48 object-cover rounded mb-3"
-                  />
-                )}
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  Read more
-                </a>
-              </div>
-            ))
-          ) : (
-            <p>Loading news...</p>
-          )}
+  <h2 className="text-2xl font-bold mb-4">Latest World News</h2>
+  <div className="grid gap-4">
+    {news.length > 0 ? (
+      news.map((item, index) => (
+        <div key={index} className="bg-white p-4 rounded shadow">
+          <img
+            src={
+              item.urlToImage
+                ? item.urlToImage
+                : `https://picsum.photos/600/400?random=${index + 1}`
+            }
+            alt={item.title}
+            className="w-full h-48 object-cover rounded mb-3"
+          />
+          <h3 className="text-lg font-semibold">{item.title}</h3>
+          <p className="text-gray-600">{item.description || "No description."}</p>
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            Read more
+          </a>
         </div>
-      </section>
+      ))
+    ) : (
+      <p>Loading news...</p>
+    )}
+  </div>
+</section>
 
       {/* AI Assistant Section */}
       <section className="max-w-3xl mx-auto mt-10 bg-white p-4 rounded shadow">
