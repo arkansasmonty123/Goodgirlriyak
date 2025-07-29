@@ -5,33 +5,32 @@ export default async function handler(req, res) {
 
   const { prompt } = req.body;
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 150,
-      }),
-    });
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inputs: prompt }),
+      }
+    );
 
     const data = await response.json();
-    console.log("Full AI Response:", data); // Debug log
+    console.log("HF AI Response:", data);
 
     if (data.error) {
-      return res.status(500).json({ result: `AI Error: ${data.error.message}` });
+      return res.status(500).json({ result: `HF API Error: ${data.error}` });
     }
 
-    if (!data.choices || !data.choices[0]?.message?.content) {
-      return res.status(500).json({ result: "AI returned no response" });
-    }
+    const aiText = Array.isArray(data)
+      ? data[0]?.generated_text || "No response"
+      : "No response";
 
-    res.status(200).json({ result: data.choices[0].message.content });
+    res.status(200).json({ result: aiText });
   } catch (error) {
-    console.error("AI API error:", error);
+    console.error("HF API error:", error);
     res.status(500).json({ message: "AI request failed" });
   }
 }
