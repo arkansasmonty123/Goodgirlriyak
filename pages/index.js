@@ -9,13 +9,13 @@ export default function Home() {
   const [chatInput, setChatInput] = useState("");
   const [loadingAI, setLoadingAI] = useState(false);
 
-  // Fetch news
+  // Fetch news headlines
   useEffect(() => {
     async function fetchNews() {
       try {
         const response = await fetch("/api/news");
         const data = await response.json();
-        console.log("News Data:", data); // Debug log
+        console.log("News Data:", data);
         if (data.articles) setNews(data.articles.slice(0, 5));
       } catch (error) {
         console.error("Error fetching news:", error);
@@ -24,17 +24,16 @@ export default function Home() {
     fetchNews();
   }, []);
 
-  // Live AI Suggestions
+  // AI suggestions for article writing
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (articleText.trim()) {
         getAISuggestions(articleText);
       }
-    }, 2000); // 2 sec after typing
+    }, 2000);
     return () => clearTimeout(timeout);
   }, [articleText]);
 
-  // Fetch AI Suggestions
   const getAISuggestions = async (prompt) => {
     try {
       const response = await fetch("/api/ai", {
@@ -43,14 +42,13 @@ export default function Home() {
         body: JSON.stringify({ prompt }),
       });
       const data = await response.json();
-      console.log("AI Suggestions Response:", data); // Debug log
+      console.log("AI Suggestions Response:", data);
       setAiSuggestions([data.result]);
     } catch (error) {
       setAiSuggestions(["Error fetching AI suggestions."]);
     }
   };
 
-  // Chatbot send message
   const sendChatMessage = async () => {
     if (!chatInput.trim()) return;
     const userMessage = { role: "user", text: chatInput };
@@ -64,7 +62,7 @@ export default function Home() {
         body: JSON.stringify({ prompt: chatInput }),
       });
       const data = await response.json();
-      console.log("AI Chatbot Response:", data); // Debug log
+      console.log("AI Chatbot Response:", data);
       setChatMessages((msgs) => [
         ...msgs,
         { role: "assistant", text: data.result },
@@ -153,4 +151,4 @@ export default function Home() {
       </div>
     </div>
   );
-  }
+         }
