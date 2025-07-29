@@ -1,135 +1,131 @@
 body {
+  font-family: 'Arial', sans-serif;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #fdf2f8;
+  padding: 0;
+  background: #fff5f8;
   color: #333;
 }
 
 .header {
-  text-align: center;
-  padding: 20px;
-  background: linear-gradient(to right, #f472b6, #ec4899);
+  background: linear-gradient(135deg, #ff77a9, #ffb347);
   color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .news-ticker {
+  background: #ffe9f3;
+  padding: 0.5rem;
   overflow: hidden;
   white-space: nowrap;
-  background: #fde8f5;
-  padding: 10px 0;
-  font-weight: bold;
-  border-top: 2px solid #f9a8d4;
-  border-bottom: 2px solid #f9a8d4;
-}
-
-.ticker-content {
-  display: inline-block;
-  padding-left: 100%;
-  animation: ticker 15s linear infinite;
+  border-bottom: 2px solid #ffb6c1;
 }
 
 .ticker-content span {
-  margin: 0 50px;
+  display: inline-block;
+  padding: 0 1rem;
+  animation: scroll-left 15s linear infinite;
 }
 
-@keyframes ticker {
-  0% { transform: translateX(0%); }
+@keyframes scroll-left {
+  0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
 
 .article-section {
-  max-width: 800px;
-  margin: 20px auto;
+  margin: 2rem auto;
+  max-width: 700px;
+  padding: 1rem;
   background: white;
-  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .article-section textarea {
   width: 100%;
-  height: 150px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-  margin-top: 10px;
+  height: 200px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
 .ai-suggestions {
-  background: #fff0f6;
-  border-left: 4px solid #ec4899;
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 4px;
+  margin-top: 1rem;
+  background: #ffeef6;
+  padding: 0.5rem;
+  border-left: 4px solid #ff77a9;
+  border-radius: 5px;
 }
 
 .chatbot {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 100;
-}
-
-.chat-toggle {
-  background: #ec4899;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
+  bottom: 10px;
+  right: 10px;
+  width: 300px;
 }
 
 .chat-window {
   background: white;
-  width: 300px;
-  max-height: 400px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  height: 350px;
 }
 
 .chat-messages {
   flex: 1;
+  padding: 0.5rem;
   overflow-y: auto;
-  padding: 10px;
 }
 
 .message {
-  padding: 8px 10px;
-  margin: 5px 0;
-  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 5px;
 }
 
 .message.user {
-  background: #f9a8d4;
-  align-self: flex-end;
+  background: #ffd5e5;
+  text-align: right;
 }
 
 .message.assistant {
-  background: #e5e7eb;
-  align-self: flex-start;
+  background: #e2e2e2;
 }
 
 .chat-input {
   display: flex;
-  border-top: 1px solid #ddd;
+  padding: 0.5rem;
+  border-top: 1px solid #ccc;
 }
 
 .chat-input input {
   flex: 1;
-  padding: 10px;
-  border: none;
-  outline: none;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .chat-input button {
-  background: #ec4899;
+  margin-left: 0.5rem;
+  background: #ff77a9;
   color: white;
   border: none;
-  padding: 10px;
-  cursor: pointer;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+}
+
+.chat-toggle {
+  margin-top: 0.5rem;
+  background: #ff77a9;
+  color: white;
+  border: none;
+  padding: 0.7rem;
+  width: 100%;
+  border-radius: 6px;
 }
