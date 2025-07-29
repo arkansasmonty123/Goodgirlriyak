@@ -5,14 +5,13 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [articleText, setArticleText] = useState("");
   const [aiSuggestions, setAiSuggestions] = useState([]);
+  const [loadingAI, setLoadingAI] = useState(false);
 
-  // Fetch latest news
+  // Fetch news from API route
   useEffect(() => {
     async function fetchNews() {
       try {
-        const response = await fetch(
-          `https://newsapi.org/v2/top-headlines?country=in&apiKey=c6dcd94f1ac8f10fcb818c2cce026535`
-        );
+        const response = await fetch("/api/news");
         const data = await response.json();
         if (data.articles) {
           setNews(data.articles.slice(0, 6));
@@ -24,13 +23,26 @@ export default function Home() {
     fetchNews();
   }, []);
 
-  const getAISuggestions = () => {
-    setAiSuggestions([
-      "Start with a catchy headline that draws attention.",
-      "Break your content into 3-4 small paragraphs with subheadings.",
-      "Add a personal anecdote or opinion to make it engaging.",
-      "Conclude with a call-to-action or a reflective thought.",
-    ]);
+  // Fetch AI response
+  const getAISuggestions = async () => {
+    if (!articleText.trim()) {
+      setAiSuggestions(["Please write something for AI to assist."]);
+      return;
+    }
+    setLoadingAI(true);
+    try {
+      const response = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: articleText }),
+      });
+      const data = await response.json();
+      setAiSuggestions([data.result]);
+    } catch (error) {
+      console.error("AI Error:", error);
+      setAiSuggestions(["Error fetching AI response."]);
+    }
+    setLoadingAI(false);
   };
 
   const filteredNews = news.filter((item) =>
@@ -68,8 +80,21 @@ export default function Home() {
                 key={index}
                 className="bg-white rounded-xl shadow-md p-5 hover:shadow-xl transition-shadow duration-300"
               >
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
-                <p className="text-gray-600 text-sm">{item.description || "No description available."}</p>
+                {item.urlToImage ? (
+                  <img
+                    src={item.urlToImage}
+                    alt={item.title}
+                    className="rounded-lg mb-3 w-full h-40 object-cover"
+                  />
+                ) : (
+                  <div className="bg-gray-200 h-40 rounded-lg mb-3" />
+                )}
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  {item.description || "No description available."}
+                </p>
                 <a
                   href={item.url}
                   target="_blank"
@@ -99,12 +124,11 @@ export default function Home() {
           <button
             onClick={getAISuggestions}
             className="bg-gradient-to-r from-pink-400 to-purple-500 text-white px-6 py-2 rounded-lg shadow hover:shadow-xl transition-all duration-300"
+            disabled={loadingAI}
           >
-            Ask AI Copilot
+            {loadingAI ? "Thinking..." : "Ask AI Copilot"}
           </button>
-          <button
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700"
-          >
+          <button className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700">
             Save Draft
           </button>
         </div>
